@@ -12,6 +12,10 @@ client/dist/
 client/build/
 server/dist/
 
+DEPLOY_FRONTEND.md
+DEPLOY_RENDER.md
+
+
 # Logs
 *.log
 npm-debug.log*
