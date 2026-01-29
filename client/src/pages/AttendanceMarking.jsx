@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { format } from 'date-fns';
 
 const AttendanceMarking = () => {
     const [students, setStudents] = useState([]);
@@ -10,6 +9,7 @@ const AttendanceMarking = () => {
     const [submitting, setSubmitting] = useState(false);
     const [activeInfo, setActiveInfo] = useState({ date: '', day: '' });
     const [lectureStatus, setLectureStatus] = useState('Conducted');
+    const [search, setSearch] = useState('');
     const { logout } = useAuth();
 
     useEffect(() => {
@@ -105,15 +105,23 @@ const AttendanceMarking = () => {
                     </div>
                 ) : (
                     <div className="space-y-3">
+                        {/* Search Bar */}
+                        <input
+                            type="text"
+                            placeholder="Search student by name or enrollment..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full px-4 py-3 rounded-xl bg-white border-2 border-gray-200 focus:border-indigo-500 outline-none font-medium mb-4"
+                        />
                         <div className="flex justify-between px-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                            <span>Student Identity</span>
+                            <span>Student ({students.filter(s => s.name.toLowerCase().includes(search.toLowerCase()) || s.enrollmentNo.toLowerCase().includes(search.toLowerCase())).length})</span>
                             <span>Status</span>
                         </div>
-                        {students.length === 0 ? (
+                        {students.filter(s => s.name.toLowerCase().includes(search.toLowerCase()) || s.enrollmentNo.toLowerCase().includes(search.toLowerCase())).length === 0 ? (
                             <div className="text-center py-20 text-gray-400 font-bold">
-                                NO STUDENTS FOUND IN DATABASE
+                                {search ? 'No students match your search' : 'NO STUDENTS FOUND IN DATABASE'}
                             </div>
-                        ) : students.map(student => (
+                        ) : students.filter(s => s.name.toLowerCase().includes(search.toLowerCase()) || s.enrollmentNo.toLowerCase().includes(search.toLowerCase())).map(student => (
                             <div
                                 key={student._id}
                                 onClick={() => toggleAttendance(student._id)}
@@ -123,7 +131,7 @@ const AttendanceMarking = () => {
                                     }`}
                             >
                                 <div className="flex-1">
-                                    <div className="font-black text-gray-900 leading-tight">{student.name}</div>
+                                    <div className="font-black text-gray-900 leading-tight uppercase">{student.name}</div>
                                     <div className="text-[10px] font-bold text-gray-400 tracking-tight">{student.enrollmentNo}</div>
                                 </div>
                                 <div className={`w-6 h-6 rounded-lg flex items-center justify-center border-2 transition-all ${attendance[student._id] ? 'bg-indigo-600 border-indigo-600' : 'border-gray-200'

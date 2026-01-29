@@ -15,8 +15,8 @@ const importData = async () => {
         try { await Attendance.collection.drop(); } catch (e) { }
 
         const users = [
-            { username: 'admin', password: 'password123', role: 'admin' },
-            { username: 'user', password: 'password123', role: 'user' },
+            { username: 'admin', password: process.env.ADMIN_PASSWORD || 'admin123', role: 'admin' },
+            { username: 'user', password: process.env.USER_PASSWORD || 'user123', role: 'user' },
         ];
 
         for (const u of users) {
