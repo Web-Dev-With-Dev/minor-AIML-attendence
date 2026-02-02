@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "seed": "node seeder.js"
+    "seed": "node seeder.js",
+    "build": "echo 'Build complete'"
   },
   "keywords": [
     "attendance",
