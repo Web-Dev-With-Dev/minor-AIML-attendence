@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import AttendanceMarking from './pages/AttendanceMarking';
 import AdminDashboard from './pages/AdminDashboard';
+import StudentDashboard from './pages/StudentDashboard';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -18,6 +19,10 @@ function App() {
 
           <Route element={<PrivateRoute allowedRoles={['admin']} />}>
             <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
+
+          <Route element={<PrivateRoute allowedRoles={['student']} />}>
+            <Route path="/student" element={<StudentDashboard />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/login" />} />

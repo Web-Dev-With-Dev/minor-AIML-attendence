@@ -11,7 +11,12 @@ const PrivateRoute = ({ allowedRoles }) => {
     }
 
     if (allowedRoles && !allowedRoles.includes(user.role)) {
-        return <Navigate to={user.role === 'admin' ? '/admin' : '/'} replace />;
+        const redirectPath = user.role === 'admin'
+            ? '/admin'
+            : user.role === 'student'
+                ? '/student'
+                : '/';
+        return <Navigate to={redirectPath} replace />;
     }
 
     return <Outlet />;

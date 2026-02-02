@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const userSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'user'], default: 'user' }
+    role: { type: String, enum: ['admin', 'user', 'student'], default: 'user' },
+    enrollmentNo: { type: String }
 }, { timestamps: true });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

@@ -17,6 +17,10 @@ const importData = async () => {
         const users = [
             { username: 'admin', password: process.env.ADMIN_PASSWORD || 'admin123', role: 'admin' },
             { username: 'user', password: process.env.USER_PASSWORD || 'user123', role: 'user' },
+            // Sample student users - they can login with enrollment number as username
+            { username: '240280107043', password: 'student123', role: 'student', enrollmentNo: '240280107043' },
+            { username: '240280107036', password: 'student123', role: 'student', enrollmentNo: '240280107036' },
+            { username: '240280107141', password: 'student123', role: 'student', enrollmentNo: '240280107141' },
         ];
 
         for (const u of users) {
@@ -24,7 +28,7 @@ const importData = async () => {
             await user.save();
         }
 
-        console.log('Users Imported');
+        console.log('Users Imported (including sample students)');
 
         const students = [
             { name: "DUBEY ARCHIT RAJESH", enrollmentNo: "240280107036", department: 'AI & Machine Learning' },

@@ -14,6 +14,7 @@ const Login = () => {
         try {
             const user = await login(username, password);
             if (user.role === 'admin') navigate('/admin');
+            else if (user.role === 'student') navigate('/student');
             else navigate('/');
         } catch (err) {
             setError('Invalid credentials');
