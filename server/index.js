@@ -12,10 +12,31 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-    origin: true,
-    credentials: true
-}));
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            'https://minor-aiml-attendence.vercel.app',
+            'http://localhost:3000',
+            'http://localhost:5173'
+        ];
+
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(null, true);
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 86400
+};
+
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
 
 // Connect Database
 if (process.env.MONGO_URI && process.env.MONGO_URI.startsWith('mongodb')) {
