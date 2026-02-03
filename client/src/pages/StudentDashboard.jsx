@@ -370,37 +370,52 @@ const StudentDashboard = () => {
 };
 
 const getAttendanceStatus = (percentage) => {
-    if (percentage >= 75) return { color: 'text-green-600', bg: 'bg-green-50', label: 'Good Standing' };
-    if (percentage >= 60) return { color: 'text-yellow-600', bg: 'bg-yellow-50', label: 'Warning' };
-    return { color: 'text-red-600', bg: 'bg-red-50', label: 'Critical' };
+    if (percentage >= 85) return { color: 'text-green-600', bg: 'bg-green-50', label: 'Excellent' };
+    if (percentage >= 70) return { color: 'text-blue-600', bg: 'bg-blue-50', label: 'Good' };
+    if (percentage >= 50) return { color: 'text-yellow-600', bg: 'bg-yellow-50', label: 'Average' };
+    return { color: 'text-red-600', bg: 'bg-red-50', label: 'Needs Improvement' };
 };
 
 const SmartAlerts = ({ statistics }) => {
     const percentage = statistics?.attendancePercentage || 0;
 
-    if (percentage >= 75) {
+    if (percentage >= 85) {
         return (
             <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-r-lg">
                 <div className="flex items-start gap-3">
-                    <span className="text-2xl"></span>
+                    <span className="text-2xl">🎉</span>
                     <div>
                         <h3 className="text-sm font-semibold text-green-900">Excellent Attendance!</h3>
                         <p className="text-sm text-green-700 mt-1">
-                            You're doing great! Your attendance is at {percentage}%, which is above the required 75%. Keep it up!
+                            Outstanding! Your attendance is at {percentage}%. Keep up the great work!
                         </p>
                     </div>
                 </div>
             </div>
         );
-    } else if (percentage >= 60) {
+    } else if (percentage >= 70) {
+        return (
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                <div className="flex items-start gap-3">
+                    <span className="text-2xl">👍</span>
+                    <div>
+                        <h3 className="text-sm font-semibold text-blue-900">Good Attendance</h3>
+                        <p className="text-sm text-blue-700 mt-1">
+                            You're doing well! Your attendance is at {percentage}%. Keep attending classes regularly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (percentage >= 50) {
         return (
             <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6 rounded-r-lg">
                 <div className="flex items-start gap-3">
                     <span className="text-2xl">⚠️</span>
                     <div>
-                        <h3 className="text-sm font-semibold text-yellow-900">Attendance Warning</h3>
+                        <h3 className="text-sm font-semibold text-yellow-900">Average Attendance</h3>
                         <p className="text-sm text-yellow-700 mt-1">
-                            Your attendance is at {percentage}%. You need to attend more classes to meet the requirement.
+                            Your attendance is at {percentage}%. Consider attending more classes to improve your record.
                         </p>
                     </div>
                 </div>
@@ -412,9 +427,9 @@ const SmartAlerts = ({ statistics }) => {
                 <div className="flex items-start gap-3">
                     <span className="text-2xl">🚨</span>
                     <div>
-                        <h3 className="text-sm font-semibold text-red-900">Critical: Low Attendance</h3>
+                        <h3 className="text-sm font-semibold text-red-900">Low Attendance</h3>
                         <p className="text-sm text-red-700 mt-1">
-                            Your attendance is critically low at {percentage}%. Please attend all upcoming classes!
+                            Your attendance is at {percentage}%. Please attend classes regularly to improve your record.
                         </p>
                     </div>
                 </div>
@@ -423,57 +438,7 @@ const SmartAlerts = ({ statistics }) => {
     }
 };
 
-const AttendanceCalculator = ({ statistics }) => {
-    const currentPercentage = statistics?.attendancePercentage || 0;
-    const totalLectures = statistics?.totalLectures || 0;
-    const presentCount = statistics?.presentCount || 0;
 
-    const classesNeeded = Math.max(0, Math.ceil((0.75 * totalLectures - presentCount) / 0.25));
-
-    const classesCanMiss = currentPercentage >= 75
-        ? Math.floor((presentCount - 0.75 * totalLectures) / 0.75)
-        : 0;
-
-    return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Attendance Calculator</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                        <span className="text-3xl">🎯</span>
-                        <div>
-                            <p className="text-sm font-semibold text-blue-900">To Reach 75%</p>
-                            <p className="text-2xl font-bold text-blue-600 mt-2">
-                                {currentPercentage >= 75 ? '✓ Already There!' : `${classesNeeded} classes`}
-                            </p>
-                            <p className="text-xs text-blue-700 mt-1">
-                                {currentPercentage >= 75
-                                    ? 'You meet the requirement!'
-                                    : 'Need to attend consecutively'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                        <span className="text-3xl">💡</span>
-                        <div>
-                            <p className="text-sm font-semibold text-green-900">Classes You Can Miss</p>
-                            <p className="text-2xl font-bold text-green-600 mt-2">
-                                {classesCanMiss > 0 ? `${classesCanMiss} classes` : 'None'}
-                            </p>
-                            <p className="text-xs text-green-700 mt-1">
-                                {classesCanMiss > 0
-                                    ? 'While staying above 75%'
-                                    : 'Attend all classes'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 const RecentAttendance = ({ records }) => {
     const recentRecords = records?.slice(-7).reverse() || [];
@@ -548,20 +513,21 @@ const MonthlyTrendChart = ({ records }) => {
                             <div key={month}>
                                 <div className="flex justify-between items-center mb-2">
                                     <span className="text-sm font-medium text-gray-700">{monthLabel}</span>
-                                    <span className={`text-sm font-bold ${percentage >= 75 ? 'text-green-600' :
-                                        percentage >= 60 ? 'text-yellow-600' : 'text-red-600'
+                                    <span className={`text-sm font-bold ${percentage >= 85 ? 'text-green-600' :
+                                        percentage >= 70 ? 'text-blue-600' :
+                                            percentage >= 50 ? 'text-yellow-600' : 'text-red-600'
                                         }`}>
                                         {percentage}%
                                     </span>
                                 </div>
                                 <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                                     <div
-                                        className={`h-3 rounded-full transition-all duration-500 ${percentage >= 75 ? 'bg-green-500' :
-                                            percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                                        className={`h-3 rounded-full transition-all duration-500 ${percentage >= 85 ? 'bg-green-500' :
+                                            percentage >= 70 ? 'bg-blue-500' :
+                                                percentage >= 50 ? 'bg-yellow-500' : 'bg-red-500'
                                             }`}
                                         style={{ width: `${percentage}%` }}
                                     />
-                                    <div className="absolute top-0 left-3/4 w-0.5 h-3 bg-blue-600" title="75% requirement" />
                                 </div>
                                 <p className="text-xs text-gray-500 mt-1">
                                     {monthlyData[month].present} / {monthlyData[month].total} classes
