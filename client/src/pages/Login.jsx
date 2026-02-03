@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useAuth();
+    const { login, user, loading } = useAuth();
     const navigate = useNavigate();
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (!loading && user) {
+            if (user.role === 'admin') {
+                navigate('/admin', { replace: true });
+            } else if (user.role === 'student') {
+                navigate('/student', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
+        }
+    }, [user, loading, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,6 +32,17 @@ const Login = () => {
             setError('Invalid credentials');
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
