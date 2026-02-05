@@ -2,7 +2,7 @@
 
 A full-stack web application designed for tracking student attendance for AI/ML department lectures (Tuesday to Friday schedule).
 
-## 🎯 Features
+##  Features
 
 ### **For Users (Attendance Markers)**
 - Mark attendance for 66 students with a single-tap interface
@@ -138,26 +138,6 @@ The app will run on:
   role: String (admin/user)
 }
 ```
-
----
-
-## 🔐 API Routes
-
-### Authentication
-- `POST /api/auth/login` - User login
-
-### Students
-- `GET /api/students` - Get all students (Protected)
-
-### Attendance
-- `GET /api/attendance/active-date` - Get current active date (Protected)
-- `POST /api/attendance` - Submit attendance (Protected, User only)
-
-### Admin
-- `GET /api/admin/stats` - Dashboard statistics (Protected, Admin only)
-- `GET /api/admin/matrix` - Attendance matrix (Protected, Admin only)
-
----
 
 ## 📝 Usage
 
